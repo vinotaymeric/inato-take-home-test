@@ -8,10 +8,6 @@ export class Drug {
   static get maxBenefit() { return 50; }
   static get minBenefit() { return 0; }
 
-  updateBenefit() {
-    this.benefit = this.nextDayBenefit();
-  }
-
   updateExpiration() {
     if (this.name === "Magic Pill") {
       return;
@@ -20,44 +16,28 @@ export class Drug {
     }
   }
 
+  updateBenefit() {
+    this.benefit = this.nextDayBenefit();
+  }
+
   nextDayBenefit() {
-    let benefit = this.benefit;
+    let benefit;
 
     switch (this.name) {
       case "Herbal Tea":
-        if (this.expiresIn > 0) {
-          benefit += 1;
-        } else {
-          benefit += 2;
-        }
+        benefit = this.#nextHerbalTeaBenefit();
         break;
       case "Magic Pill":
-        break; // do nothing
+        benefit = this.benefit; // Magic Pill always keeps its power
+        break;
       case "Fervex":
-        if (this.expiresIn <= 0) {
-          benefit = 0;
-        } else if (this.expiresIn <= 5) {
-          benefit += 3;
-        } else if (this.expiresIn <= 10) {
-          benefit += 2;
-        } else {
-          benefit += 1;
-        }
+        benefit = this.#nextFervexBenefit();
         break;
       case "Dafalgan":
-        if (this.expiresIn <= 0) {
-          benefit -= 4;
-        } else {
-          benefit -= 2;
-        }
+        benefit = this.#nextDafalganBenefit();
         break;
       default: // standard drug
-        if (this.expiresIn <= 0) {
-          benefit -= 2;
-        } else {
-          benefit -= 1;
-        }
-        break;
+        benefit = this.#nextStandardBenefit();
     }
 
     if (benefit > Drug.maxBenefit) {
@@ -68,6 +48,44 @@ export class Drug {
       return benefit;
     }
   }
+
+  // private interface
+
+    #nextHerbalTeaBenefit() {
+      if (this.expiresIn > 0) {
+        return this.benefit + 1;
+      } else {
+        return this.benefit + 2;
+      }
+    }
+
+    #nextFervexBenefit() {
+      if (this.expiresIn <= 0) {
+        return 0;
+      } else if (this.expiresIn <= 5) {
+        return this.benefit + 3;
+      } else if (this.expiresIn <= 10) {
+        return this.benefit + 2;
+      } else {
+        return this.benefit + 1;
+      }
+    }
+
+    #nextDafalganBenefit() {
+      if (this.expiresIn <= 0) {
+        return this.benefit - 4;
+      } else {
+        return this.benefit - 2;
+      }
+    }
+
+    #nextStandardBenefit() {
+      if (this.expiresIn <= 0) {
+        return this.benefit - 2;
+      } else {
+        return this.benefit - 1;
+      }
+    }
 }
 
 export class Pharmacy {
