@@ -8,6 +8,21 @@ describe("Pharmacy", () => {
   });
 
   describe("Drug", () => {
+    describe("#passADay", () => {
+      it("expires one day", () => {
+        const drug = new Drug("Standard Drug", 10, 10);
+        drug.passADay();
+
+        expect(drug.expiresIn).toEqual(9);
+      });
+      it("keeps expiresIn unchanged when Magic Pill", () => {
+        const drug = new Drug("Magic Pill", 10, 10);
+        drug.passADay();
+
+        expect(drug.expiresIn).toEqual(10);
+      });
+    });
+
     describe("#calculateNewBenefit", () => {
       describe("standard drug", () => {
         it("decreases with time", () => {
@@ -61,6 +76,5 @@ describe("Pharmacy", () => {
         });
       });
     });
-
   });
 });

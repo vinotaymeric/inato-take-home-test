@@ -10,7 +10,11 @@ export class Drug {
   }
 
   passADay() {
-    this.expiresIn = this.expiresIn - 1;
+    if (this.name === "Magic Pill") {
+      return;
+    } else {
+      this.expiresIn = this.expiresIn - 1;
+    }
   }
 
   calculateNewBenefit() {
