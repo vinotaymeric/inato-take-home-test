@@ -66,10 +66,10 @@ export class Pharmacy {
   }
 
   updateBenefitValue() {
-    for (var i = 0; i < this.drugs.length; i++) {
-      this.drugs[i].updateBenefit();
-      this.drugs[i].passADay();
-    }
+    this.drugs.forEach(drug => {
+      drug.updateBenefit();
+      drug.passADay();
+    });
 
     return this.drugs;
   }
