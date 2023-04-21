@@ -9,10 +9,10 @@ export class Drug {
   static get minBenefit() { return 0; }
 
   updateBenefit() {
-    this.benefit = this.calculateNewBenefit();
+    this.benefit = this.nextDayBenefit();
   }
 
-  passADay() {
+  updateExpiration() {
     if (this.name === "Magic Pill") {
       return;
     } else {
@@ -20,7 +20,7 @@ export class Drug {
     }
   }
 
-  calculateNewBenefit() {
+  nextDayBenefit() {
     let benefit = this.benefit;
 
     switch (this.name) {
@@ -71,7 +71,7 @@ export class Pharmacy {
   updateBenefitValue() {
     this.drugs.forEach(drug => {
       drug.updateBenefit();
-      drug.passADay();
+      drug.updateExpiration();
     });
 
     return this.drugs;
