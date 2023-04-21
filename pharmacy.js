@@ -5,6 +5,9 @@ export class Drug {
     this.benefit = benefit;
   }
 
+  static get maxBenefit() { return 50; }
+  static get minBenefit() { return 0; }
+
   updateBenefit() {
     this.benefit = this.calculateNewBenefit();
   }
@@ -50,10 +53,10 @@ export class Drug {
         break;
     }
 
-    if (benefit > 50) {
-      return 50;
-    } else if (benefit < 0) {
-      return 0;
+    if (benefit > Drug.maxBenefit) {
+      return Drug.maxBenefit;
+    } else if (benefit < Drug.minBenefit) {
+      return Drug.minBenefit;
     } else {
       return benefit;
     }
