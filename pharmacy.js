@@ -44,6 +44,13 @@ export class Drug {
           benefit += 1;
         }
         break;
+      case "Dafalgan":
+        if (this.expiresIn <= 0) {
+          benefit -= 4;
+        } else {
+          benefit -= 2;
+        }
+        break;
       default: // standard drug
         if (this.expiresIn <= 0) {
           benefit -= 2;

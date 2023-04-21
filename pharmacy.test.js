@@ -39,6 +39,21 @@ describe("Pharmacy", () => {
         });
       });
 
+      describe("edge cases: Dafalgan", () => {
+        it("decreases twice as fast as a standard drug", () => {
+          expect(new Drug("Dafalgan", 10, 10).nextDayBenefit())
+            .toEqual(8);
+        });
+        it("decreases faster when drug expired", () => {
+          expect(new Drug("Dafalgan", -1, 10).nextDayBenefit())
+            .toEqual(6);
+        });
+        it("never goes below 0", () => {
+          expect(new Drug("Dafalgan", -1, 0).nextDayBenefit())
+            .toEqual(0);
+        });
+      });
+
       describe("edge cases: Herbal Tea", () => {
         it("increases in benefit", () => {
           expect(new Drug("Herbal Tea", 10, 10).nextDayBenefit())
