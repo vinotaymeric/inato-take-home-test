@@ -40,6 +40,10 @@ export class Drug {
         benefit = this.#nextStandardBenefit();
     }
 
+    return this.cap(benefit)
+  }
+
+  cap(benefit) {
     if (benefit > Drug.maxBenefit) {
       return Drug.maxBenefit;
     } else if (benefit < Drug.minBenefit) {
