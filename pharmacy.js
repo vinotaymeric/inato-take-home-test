@@ -1,3 +1,7 @@
+// A few other implementation ideas which might make the system more resilient but seem not relevant for now (they would require deeper changes, would have to be discussed with the rest of the team, etc.):
+  // Drug#expiresIn: asking an absolute expiration date and deduce the expiresIn seems more resilient
+  // Depending on where inputs come from, we might want to add validations or typing (to ensure expiresIn is an integer, etc.)
+
 export class Drug {
   constructor(name, expiresIn, benefit) {
     this.name = name;
