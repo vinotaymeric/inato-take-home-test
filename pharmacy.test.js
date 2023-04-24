@@ -1,10 +1,23 @@
 import { Drug, Pharmacy } from "./pharmacy";
 
 describe("Pharmacy", () => {
-  it("should decrease the benefit and expiresIn", () => {
-    expect(new Pharmacy([new Drug("test", 2, 3)]).updateBenefitValue()).toEqual(
-      [new Drug("test", 1, 2)]
-    );
+  it("should decrease the benefit and expiresIn of each drug in the pharmacy", () => {
+    let testDrug = new Drug("test", 2, 3);
+    let magicPill = new Drug("Magic Pill", 10, 10);
+    let dafalgan = new Drug("Dafalgan", 10, 10);
+
+    let pharmacy = new Pharmacy([testDrug, magicPill, dafalgan]);
+
+    pharmacy.updateBenefitValue();
+
+    expect(pharmacy.drugs[0].expiresIn).toEqual(1);
+    expect(pharmacy.drugs[0].benefit).toEqual(2);
+
+    expect(pharmacy.drugs[1].expiresIn).toEqual(10);
+    expect(pharmacy.drugs[1].benefit).toEqual(10);
+
+    expect(pharmacy.drugs[2].expiresIn).toEqual(9);
+    expect(pharmacy.drugs[2].benefit).toEqual(8);
   });
 
   describe("Drug", () => {
