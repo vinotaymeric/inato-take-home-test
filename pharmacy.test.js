@@ -1,35 +1,37 @@
 import { Drug, Pharmacy } from "./pharmacy";
 
 describe("Pharmacy", () => {
-  it("should decrease the benefit and expiresIn of each drug in the pharmacy", () => {
-    let testDrug = new Drug("test", 2, 3);
-    let magicPill = new Drug("Magic Pill", 10, 10);
-    let dafalgan = new Drug("Dafalgan", 10, 10);
+  describe("#updateBenefitValue", () => {
+    it("decreases the benefit and expiresIn of each drug in the pharmacy", () => {
+      let testDrug = new Drug("test", 2, 3);
+      let magicPill = new Drug("Magic Pill", 10, 10);
+      let dafalgan = new Drug("Dafalgan", 10, 10);
 
-    let pharmacy = new Pharmacy([testDrug, magicPill, dafalgan]);
+      let pharmacy = new Pharmacy([testDrug, magicPill, dafalgan]);
 
-    pharmacy.updateBenefitValue();
+      pharmacy.updateBenefitValue();
 
-    expect(pharmacy.drugs[0].expiresIn).toEqual(1);
-    expect(pharmacy.drugs[0].benefit).toEqual(2);
+      expect(pharmacy.drugs[0].expiresIn).toEqual(1);
+      expect(pharmacy.drugs[0].benefit).toEqual(2);
 
-    expect(pharmacy.drugs[1].expiresIn).toEqual(10);
-    expect(pharmacy.drugs[1].benefit).toEqual(10);
+      expect(pharmacy.drugs[1].expiresIn).toEqual(10);
+      expect(pharmacy.drugs[1].benefit).toEqual(10);
 
-    expect(pharmacy.drugs[2].expiresIn).toEqual(9);
-    expect(pharmacy.drugs[2].benefit).toEqual(8);
+      expect(pharmacy.drugs[2].expiresIn).toEqual(9);
+      expect(pharmacy.drugs[2].benefit).toEqual(8);
+    });
   });
 
   describe("Drug", () => {
     describe("#updateExpiration", () => {
-      it("expires one day", () => {
-        const drug = new Drug("Standard Drug", 10, 10);
+      it("diminishes expireIn by one", () => {
+        let drug = new Drug("Standard Drug", 10, 10);
         drug.updateExpiration();
 
         expect(drug.expiresIn).toEqual(9);
       });
       it("keeps expiresIn unchanged when Magic Pill", () => {
-        const drug = new Drug("Magic Pill", 10, 10);
+        let drug = new Drug("Magic Pill", 10, 10);
         drug.updateExpiration();
 
         expect(drug.expiresIn).toEqual(10);
@@ -52,7 +54,7 @@ describe("Pharmacy", () => {
         });
       });
 
-      describe("edge cases: Dafalgan", () => {
+      describe("special drug: Dafalgan", () => {
         it("decreases twice as fast as a standard drug", () => {
           expect(new Drug("Dafalgan", 10, 10).nextDayBenefit())
             .toEqual(8);
@@ -67,12 +69,12 @@ describe("Pharmacy", () => {
         });
       });
 
-      describe("edge cases: Herbal Tea", () => {
-        it("increases in benefit", () => {
+      describe("special drug: Herbal Tea", () => {
+        it("increases benefit when time passes", () => {
           expect(new Drug("Herbal Tea", 10, 10).nextDayBenefit())
             .toEqual(11);
         });
-        it("increases even more when out of date", () => {
+        it("increases even more when drug is out of date", () => {
           expect(new Drug("Herbal Tea", 0, 10).nextDayBenefit())
             .toEqual(12);
         });
@@ -82,24 +84,24 @@ describe("Pharmacy", () => {
         });
       });
 
-      describe("edge cases: Magic Pill", () => {
-        it("remains stable", () => {
+      describe("special drug: Magic Pill", () => {
+        it("keeps benefit stable", () => {
           expect(new Drug("Magic Pill", 10, 10).nextDayBenefit())
             .toEqual(10);
         });
       });
 
-      describe("edge cases: Fervex", () => {
-        it("increases more and more...", () => {
-          expect(new Drug("Fervex", 4, 10).nextDayBenefit())
-            .toEqual(13);
-        });
-        it("handles corner cases", () => {
+      describe("special drug: Fervex", () => {
+        it("increases benefits somewhat exponentially", () => {
           expect(new Drug("Fervex", 10, 10).nextDayBenefit())
             .toEqual(12);
         });
-        it("...then drops to 0", () => {
-          expect(new Drug("Fervex", -1, 10).nextDayBenefit())
+        it("increases benefits somewhat exponentially", () => {
+          expect(new Drug("Fervex", 4, 10).nextDayBenefit())
+            .toEqual(13);
+        });
+        it("drops benefits to 0 when drug is expired", () => {
+          expect(new Drug("Fervex", 0, 10).nextDayBenefit())
             .toEqual(0);
         });
       });
